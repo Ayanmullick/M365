@@ -24,3 +24,16 @@ $appRole = $resourceServicePrincipal.AppRoles | Where-Object { $_.Value -eq "Fil
 New-EntraServicePrincipalAppRoleAssignment -ObjectId $clientServicePrincipal.Id -PrincipalId $clientServicePrincipal.Id -Id $appRole.Id `
     -ResourceId ($resourceServicePrincipal|? SignInAudience -Like '*My*').Id -Verbose   #Error: Permission being assigned was not found on application 
 #endregion    
+
+
+Get-EntraServicePrincipal -Filter "displayName eq '<UAMI>'"|FL
+Get-EntraServicePrincipal -ServicePrincipalId <UAMI Principal Id>
+<#managed identities—whether system‑ or user‑assigned—are designed exclusively for outbound authentication
+ it isn’t designed to support the interactive sign‐in flows required for inbound authentication
+
+There’s no Microsoft‑supported way to attach an application object to the existing service principal that backs your user‑assigned identity. 
+If you need an actual app registration for OAuth or for custom usage, you must create a separate application object and then create a service principal for it.
+#>
+# The 'create new app registration' option in the 'Authentication' blade for a function creates a new Enterprise application object and a new service principal object.
+Get-EntraApplication -Filter "displayName eq 'Test-func-pwsh-d-c-01'" 
+Get-EntraServicePrincipal -Filter "displayName eq 'Test-func-pwsh-d-c-01'"
