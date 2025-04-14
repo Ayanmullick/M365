@@ -7,3 +7,5 @@ $emails = @('Ayan.Mullick@<>', '<>@<>','<>@<>','<>@<>','<>@<>')
          $user = Get-EntraUser -Filter "mail eq '$email'"
          Add-EntraGroupMember -GroupId $group.Id -RefObjectId $user.Id
      }
+
+Get-EntraGroup -Filter "displayname eq '<>'" #Works too for Type : Security     
