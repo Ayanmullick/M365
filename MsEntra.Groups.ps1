@@ -9,3 +9,6 @@ $emails = @('Ayan.Mullick@<>', '<>@<>','<>@<>','<>@<>','<>@<>')
      }
 
 Get-EntraGroup -Filter "displayname eq '<>'" #Works too for Type : Security     
+
+
+Add-EntraGroupMember -GroupId $group.Id -RefObjectId $UAMI.PrincipalId #Add a user assigned MSI in an Entra group
