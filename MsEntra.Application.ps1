@@ -37,3 +37,19 @@ If you need an actual app registration for OAuth or for custom usage, you must c
 # The 'create new app registration' option in the 'Authentication' blade for a function creates a new Enterprise application object and a new service principal object.
 Get-EntraApplication -Filter "displayName eq 'Test-func-pwsh-d-c-01'" 
 Get-EntraServicePrincipal -Filter "displayName eq 'Test-func-pwsh-d-c-01'"
+
+
+#region  Create an Entra App, associate a service principal and store it's credential in a vault.
+Connect-Entra -Scopes 'Application.ReadWrite.All','Directory.Read.All'
+
+$app = New-EntraApplication -DisplayName "<>"
+#$app = Get-EntraApplication -Filter "displayName eq '<>'"
+
+$sp = New-EntraServicePrincipal -AppId $app.AppId
+New-AzRoleAssignment -ObjectId $sp.Id -RoleDefinitionName Reader
+$secret = New-EntraServicePrincipalPasswordCredential -ServicePrincipalId $sp.Id -DisplayName "<>" -StartDate (Get-Date) -EndDate (Get-Date).AddYears(2)
+#$secretText = $secret.SecretText  #This stores the system generated password
+
+$secureSecret = ConvertTo-SecureString -String $secret.SecretText -AsPlainText -Force
+Set-AzKeyVaultSecret -VaultName 'kv-cubic-d-c-01' -Name $secret.DisplayName -SecretValue $secureSecret
+#endregion
