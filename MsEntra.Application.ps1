@@ -46,7 +46,7 @@ $app = New-EntraApplication -DisplayName "<>"
 #$app = Get-EntraApplication -Filter "displayName eq '<>'"
 
 $sp = New-EntraServicePrincipal -AppId $app.AppId
-New-AzRoleAssignment -ObjectId $sp.Id -RoleDefinitionName Reader
+New-AzRoleAssignment -ObjectId $sp.Id -RoleDefinitionName Reader  #Assigns subscription level Reader permission
 $secret = New-EntraServicePrincipalPasswordCredential -ServicePrincipalId $sp.Id -DisplayName "<>" -StartDate (Get-Date) -EndDate (Get-Date).AddYears(2)
 #$secretText = $secret.SecretText  #This stores the system generated password
 
